@@ -1,0 +1,95 @@
+# Breeds
+BreedGUI:
+  Title: "&bSelect a breed"
+
+Breeds:
+  'Akhal Teke':
+    Item: ENCHANTED_BOOK
+    Display: "&bAkhal Teke"
+    Lore:
+      - "This horse is the best!"
+      - "#1"
+    # Variant options: DONKEY, HORSE, LLAMA, MULE, SKELETON_HORSE, UNDEAD_HORSE
+    Variant: 'HORSE'
+    # Style options: BLACK_DOTS, NONE, WHITE, WHITE_DOTS, WHITEFIELD
+    Style: 'BLACK_DOTS'
+    # Color options: BLACK, BROWN, CHESTNUT, CREAMY, DARK_BROWN, GRAY, WHITE
+    Color: 'CHESTNUT'
+    # A higher jump strength increases how high a jump will go. Setting a jump strength to 0 will result in no jump.
+    # You cannot set a jump strength to a value below 0 or above 2.
+    JumpStrength: 0.7
+    MovementSpeed: 0.5
+    MaxHealth: 30
+  'Appaloosa':
+    Item: DIRT
+    Display: "&bAppaloosa"
+    Lore:
+      - "This horse is the worst!"
+    Variant: 'SKELETON_HORSE'
+    Style: 'WHITE'
+    Color: 'CREAMY'
+    JumpStrength: 0
+    MovementSpeed: 0.1
+    MaxHealth: 2
+
+# Disciplines
+DisciplinesGUI:
+  Title: "&bSelect a discipline"
+
+Disciplines:
+  'Dressage':
+    Item: SADDLE
+    Display: "&bDressage"
+    Lore:
+      - "Click to select dressage discipline"
+
+# Genders
+GendersGUI:
+  Title: "&bSelect a gender"
+
+Genders:
+  'Mare':
+    Item: SADDLE
+    Display: "&bMare"
+    Lore:
+      - "Click to select Mare"
+  'Stallion':
+    Item: SADDLE
+    Display: "&bStallion"
+    Lore:
+      - "Click to select Stallion"
+  'Gelding':
+    Item: SADDLE
+    Display: "&bGelding"
+    Lore:
+      - "Click to select Gelding"
+
+# Horse list
+HorseGUI:
+  Title: "&bYour horses"
+
+HorseItem:
+  Item: SADDLE
+  Display: "&c%name%"
+  Lore:
+    - "&cShowname: &a%showname%"
+    - "&cAge: &a%age%"
+    - "&cBreed: &a%breed%"
+    - "&cDisciplines: &a%disciplines%"
+    - "&cGender: &a%gender%"
+
+# Messages sent to players
+Messages:
+  EnterShowName: "&bEnter the horse showname:"
+  EnterName: "&bEnter horse name:"
+  EnterAge: "&bEnter the horses age:"
+  CreateTimeout: "&bHorse create has timed out. Try again."
+  InvalidInput: "&bInvalid input. Try again!"
+  ShowNameUsed: "&cThat showname is already being used! Try again."
+  MustBeOnHorse: "&cYou must be on a horse to run this command!"
+  AlreadyClaimed: "&cThis horse has already been claimed!"
+  HorseNotClaimed: "&cThis horse has not been claimed!"
+  NotYourHorse: "&cYou do not own this horse!"
+  UnclaimHorse: "&aUnclaimed horse!"
+  ClaimedHorse: "&aClaimed horse!"
+  HorseNotFound: "&cHorse with that showname does not exist!"

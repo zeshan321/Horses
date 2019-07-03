@@ -1,0 +1,4 @@
+name: Horses
+main: com.zeshanaslam.horses.Main
+version: 1.0.0
+depend: [InventoryApi]
