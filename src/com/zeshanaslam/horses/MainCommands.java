@@ -270,7 +270,7 @@ public class MainCommands extends BaseCommand {
                 if (entity.getLocation().distance(location) >= distance)
                     entity.teleport(player);
             }
-            ((EntityInsentient) ((CraftEntity) livingEntity).getHandle()).getNavigation().a(location.getX(), location.getY(), location.getZ(), speed * 2);
+            ((EntityInsentient) ((CraftEntity) livingEntity).getHandle()).getNavigation().a(location.getX(), location.getY(), location.getZ(), speed);
         }, 0, 20);
 
         if (following.containsKey(entity.getUniqueId())) {

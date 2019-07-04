@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c5f5e3a0-5f15-4ab3-80b7-2bb6c803d0c8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/zeshanaslam/horses/LocationTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/zeshanaslam/horses/LocationTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/zeshanaslam/horses/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/zeshanaslam/horses/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/zeshanaslam/horses/MainCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/zeshanaslam/horses/MainCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/zeshanaslam/horses/config/ConfigStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/zeshanaslam/horses/config/ConfigStore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/zeshanaslam/horses/listeners/BaseListeners.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/zeshanaslam/horses/listeners/BaseListeners.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,8 +35,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/zeshanaslam/horses/MainCommands.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="470">
-              <caret line="295" column="80" selection-start-line="295" selection-start-column="80" selection-end-line="295" selection-end-column="80" />
+            <state relative-caret-position="229">
+              <caret line="272" column="148" selection-start-line="272" selection-start-column="148" selection-end-line="272" selection-end-column="148" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4057#4058#0" expanded="true" />
@@ -270,7 +264,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562213050765" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562214275090" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/libs" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="C:/Program Files/nodejs/node" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -360,16 +354,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1561991216854</updated>
-      <workItem from="1561991219798" duration="28231000" />
+      <workItem from="1561991219798" duration="29595000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28231000" />
+    <option name="totallyTimeSpent" value="29595000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Image Layers" />
       <window_info id="Designer" />
@@ -635,8 +628,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/zeshanaslam/horses/MainCommands.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="470">
-          <caret line="295" column="80" selection-start-line="295" selection-start-column="80" selection-end-line="295" selection-end-column="80" />
+        <state relative-caret-position="229">
+          <caret line="272" column="148" selection-start-line="272" selection-start-column="148" selection-end-line="272" selection-end-column="148" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4057#4058#0" expanded="true" />
