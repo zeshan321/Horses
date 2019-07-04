@@ -30,6 +30,7 @@ public class ConfigStore {
     public List<String> horseLore;
     public Material horseMaterial;
     public String horseInvTitle;
+    public int distanceTeleport;
 
     public ConfigStore(Main main) {
         this.gson = new Gson();
@@ -66,6 +67,8 @@ public class ConfigStore {
         for (String s: main.getConfig().getStringList("HorseItem.Lore")) {
             horseLore.add(ChatColor.translateAlternateColorCodes('&', s));
         }
+
+        distanceTeleport = main.getConfig().getInt("DistanceTeleport");
     }
 
     public enum Messages {
@@ -81,7 +84,17 @@ public class ConfigStore {
         NotYourHorse,
         UnclaimHorse,
         ClaimedHorse,
-        HorseNotFound
+        HorseNotFound,
+        NotTrusted,
+        AddedToTrsuted,
+        RemovedFromTrusted,
+        PlayerNotFound,
+        KilledHorse,
+        HorseFollowing,
+        HorseUnfollow,
+        CannotAddSelf,
+        NotOnTrusted,
+        NotFollowingAlready
     }
 
     public String getMessage(Messages type) {

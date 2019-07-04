@@ -78,6 +78,9 @@ HorseItem:
     - "&cDisciplines: &a%disciplines%"
     - "&cGender: &a%gender%"
 
+# Follow -1 to disable. If horse is x blocks away, horse will be teleported
+DistanceTeleport:  20
+
 # Messages sent to players
 Messages:
   EnterShowName: "&bEnter the horse showname:"
@@ -93,3 +96,13 @@ Messages:
   UnclaimHorse: "&aUnclaimed horse!"
   ClaimedHorse: "&aClaimed horse!"
   HorseNotFound: "&cHorse with that showname does not exist!"
+  NotTrusted: "&cYou are not trusted to ride this horse!"
+  AddedToTrsuted: "&aAdded player to trusted!"
+  RemovedFromTrusted: "&aRemoved player from trusted!"
+  PlayerNotFound: "&cPlayer not found!"
+  KilledHorse: "&cHorse has been killed."
+  HorseFollowing: "&aHorse is following you."
+  HorseUnfollow: "&aHorse not longer following you."
+  CannotAddSelf: "&cYou cannot add your self to trusted."
+  NotOnTrusted: "&cThat player is not trusted."
+  NotFollowingAlready: "&cHorse not following you!"

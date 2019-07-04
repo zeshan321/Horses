@@ -3,25 +3,36 @@ package com.zeshanaslam.horses;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
+import co.aikar.commands.bukkit.contexts.OnlinePlayer;
 import com.zeshanaslam.horses.config.ConfigStore;
 import com.zeshanaslam.horses.config.PlayerHorse;
 import com.zeshanaslam.horses.config.SafeLocation;
 import com.zeshanaslam.horses.conversation.Conversation;
 import com.zeshanaslam.horses.conversation.ConversationCallback;
 import com.zeshanaslam.horses.conversation.ConversationObject;
+import net.minecraft.server.v1_12_R1.EntityInsentient;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.entity.*;
+import org.bukkit.scheduler.BukkitTask;
 
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
 public class MainCommands extends BaseCommand {
 
     private Main plugin;
+    public HashMap<UUID, Integer> following;
 
     public MainCommands(Main plugin) {
         super("h");
         this.plugin = plugin;
+        this.following = new HashMap<>();
     }
 
     @HelpCommand
@@ -97,12 +108,19 @@ public class MainCommands extends BaseCommand {
         }
 
         PlayerHorse previous = plugin.configStore.playerHorses.get(vehicle.getUniqueId());
-        if (previous != null && previous.owner != null) {
+        if (previous == null) {
+            player.sendMessage(ChatColor.RED + "Unable to claim wild horse!");
+            return;
+        }
+
+        if (previous.owner != null) {
             player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.AlreadyClaimed));
             return;
         }
 
         AbstractHorse abstractHorse = (AbstractHorse) vehicle;
+        if (!abstractHorse.isTamed())
+            return;
 
         PlayerHorse playerHorse = (previous == null) ? new PlayerHorse() : previous;
         playerHorse.location = new SafeLocation().fromLocation(vehicle.getLocation());
@@ -136,6 +154,11 @@ public class MainCommands extends BaseCommand {
             return;
         }
 
+        // Clear following
+        if (following.containsKey(playerHorse.entity)) {
+            Bukkit.getScheduler().cancelTask(following.get(playerHorse.entity));
+        }
+
         playerHorse.setOwner(null);
         player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.UnclaimHorse));
     }
@@ -150,38 +173,132 @@ public class MainCommands extends BaseCommand {
     @Subcommand("tp")
     @CommandPermission("horses.tp")
     @Description("Teleports to horse!")
-    public void onTp(Player player, String name) {
-        Optional<PlayerHorse> optionalPlayerHorse = plugin.configStore.playerHorses.values().stream().filter(p -> p.entity.toString().equals(name)).findFirst();
-        if (optionalPlayerHorse.isPresent()) {
-            PlayerHorse playerHorse = optionalPlayerHorse.get();
-            Entity entity = plugin.inventoryHelpers.getEntity(playerHorse.entity);
-            if (entity == null) {
-                player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.HorseNotFound));
-                return;
-            }
-
-            player.teleport(entity);
-        } else {
+    @Syntax("<showname>")
+    @CommandCompletion("@playerhorse")
+    public void onTp(Player player, PlayerHorse playerHorse) {
+        Entity entity = plugin.inventoryHelpers.getEntity(playerHorse.entity);
+        if (entity == null) {
             player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.HorseNotFound));
+            return;
         }
+
+        player.teleport(entity);
     }
 
     @Subcommand("tphere")
     @CommandPermission("horses.tphere")
     @Description("Teleports hotse to you!")
-    public void onTpHere(Player player, String name) {
-        Optional<PlayerHorse> optionalPlayerHorse = plugin.configStore.playerHorses.values().stream().filter(p -> p.entity.toString().equals(name)).findFirst();
-        if (optionalPlayerHorse.isPresent()) {
-            PlayerHorse playerHorse = optionalPlayerHorse.get();
-            Entity entity = plugin.inventoryHelpers.getEntity(playerHorse.entity);
-            if (entity == null) {
-                player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.HorseNotFound));
-                return;
-            }
-
-            entity.teleport(player);
-        } else {
+    @Syntax("<showname>")
+    @CommandCompletion("@playerhorse")
+    public void onTpHere(Player player, PlayerHorse playerHorse) {
+        Entity entity = plugin.inventoryHelpers.getEntity(playerHorse.entity);
+        if (entity == null) {
             player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.HorseNotFound));
+            return;
         }
+
+        entity.teleport(player);
+    }
+
+    @Subcommand("kill")
+    @CommandPermission("horses.kill")
+    @Description("Kills horse!")
+    @Syntax("<showname>")
+    @CommandCompletion("@playerhorse")
+    public void onKill(Player player, PlayerHorse playerHorse) {
+        Entity entity = plugin.inventoryHelpers.getEntity(playerHorse.entity);
+        if (entity == null) {
+            player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.HorseNotFound));
+            return;
+        }
+
+        LivingEntity livingEntity = (LivingEntity) entity;
+        livingEntity.setHealth(0);
+        player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.KilledHorse));
+    }
+
+    @Subcommand("trust")
+    @CommandPermission("horses.trust")
+    @Description("Trusts player to ride horse!")
+    @Syntax("<player> <showname>")
+    @CommandCompletion("@players @playerhorse")
+    public void onTrust(Player player, OnlinePlayer onlinePlayer, PlayerHorse playerHorse) {
+        UUID uuid = onlinePlayer.getPlayer().getUniqueId();
+        if (playerHorse.owner.equals(uuid)) {
+            player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.CannotAddSelf));
+            return;
+        }
+
+        playerHorse.addTrusted(uuid);
+        player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.AddedToTrsuted));
+    }
+
+    @Subcommand("untrust")
+    @CommandPermission("horses.untrust")
+    @Description("Untrusts player to ride horse!")
+    @Syntax("<player> <showname>")
+    @CommandCompletion("@players @playerhorse")
+    public void onUntrust(Player player, OnlinePlayer onlinePlayer, PlayerHorse playerHorse) {
+        UUID uuid = onlinePlayer.getPlayer().getUniqueId();
+        if (!playerHorse.trusted.contains(uuid)) {
+            player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.NotOnTrusted));
+            return;
+        }
+
+        playerHorse.removeTrusted(uuid);
+        player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.RemovedFromTrusted));
+    }
+
+    @Subcommand("follow")
+    @CommandPermission("horses.follow")
+    @Description("Makes horse follow you!")
+    @Syntax("<showname>")
+    @CommandCompletion("@playerhorse")
+    public void onFollow(Player player, PlayerHorse playerHorse) {
+        Entity entity = plugin.inventoryHelpers.getEntity(playerHorse.entity);
+        if (entity == null) {
+            player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.HorseNotFound));
+            return;
+        }
+
+        LivingEntity livingEntity = (LivingEntity) entity;
+        double speed = livingEntity.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).getBaseValue();
+        BukkitTask bukkitTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            Location location = player.getLocation();
+            int distance = plugin.configStore.distanceTeleport;
+            if (distance != -1) {
+                if (entity.getLocation().distance(location) >= distance)
+                    entity.teleport(player);
+            }
+            ((EntityInsentient) ((CraftEntity) livingEntity).getHandle()).getNavigation().a(location.getX(), location.getY(), location.getZ(), speed * 2);
+        }, 0, 20);
+
+        if (following.containsKey(entity.getUniqueId())) {
+            Bukkit.getScheduler().cancelTask(following.remove(entity.getUniqueId()));
+        }
+
+        following.put(entity.getUniqueId(), bukkitTask.getTaskId());
+        player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.HorseFollowing));
+    }
+
+    @Subcommand("unfollow")
+    @CommandPermission("horses.unfollow")
+    @Description("Makes horse unfollow you!")
+    @Syntax("<showname>")
+    @CommandCompletion("@playerhorse")
+    public void onUnfollow(Player player, PlayerHorse playerHorse) {
+        Entity entity = plugin.inventoryHelpers.getEntity(playerHorse.entity);
+        if (entity == null) {
+            player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.HorseNotFound));
+            return;
+        }
+
+        if (!following.containsKey(entity.getUniqueId())) {
+            player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.NotFollowingAlready));
+            return;
+        }
+
+        Bukkit.getScheduler().cancelTask(following.remove(entity.getUniqueId()));
+        player.sendMessage(plugin.configStore.getMessage(ConfigStore.Messages.HorseUnfollow));
     }
 }

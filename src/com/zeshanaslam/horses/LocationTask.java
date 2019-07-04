@@ -20,8 +20,7 @@ public class LocationTask extends BukkitRunnable {
         for (World world: Bukkit.getServer().getWorlds()) {
             for (Entity entity: world.getEntities()) {
                 if (main.configStore.playerHorses.containsKey(entity.getUniqueId())) {
-                    PlayerHorse playerHorse = main.configStore.playerHorses.get(entity.getUniqueId());
-                    playerHorse.setLocation(new SafeLocation().fromLocation(entity.getLocation()));
+                    main.configStore.playerHorses.get(entity.getUniqueId()).setLocation(new SafeLocation().fromLocation(entity.getLocation()));
                 }
             }
         }
